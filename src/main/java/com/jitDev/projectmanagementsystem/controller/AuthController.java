@@ -2,11 +2,10 @@ package com.jitDev.projectmanagementsystem.controller;
 
 import com.jitDev.projectmanagementsystem.config.JwtProvider;
 import com.jitDev.projectmanagementsystem.model.User;
-import com.jitDev.projectmanagementsystem.repository.UserRepo;
+import com.jitDev.projectmanagementsystem.repository.UserRepository;
 import com.jitDev.projectmanagementsystem.request.LoginRequest;
 import com.jitDev.projectmanagementsystem.response.AuthResponse;
 import com.jitDev.projectmanagementsystem.service.CustomUserDetailImpl;
-import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     @Autowired
-    UserRepo userRepo;
+    UserRepository userRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
@@ -34,7 +33,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user) throws Exception {
-        User isUserPresent = userRepo.findByEmail(user.getEmail());
+        User isUserPresent = userRepository.findByEmail(user.getEmail());
 
         if (isUserPresent != null) {
             throw  new Exception("email is already present with another account!!");
@@ -45,7 +44,7 @@ public class AuthController {
         createdUser.setPassword(passwordEncoder.encode(user.getPassword()));
         createdUser.setFirstName(user.getFirstName());
 
-        User savedUser = userRepo.save(createdUser);
+        User savedUser = userRepository.save(createdUser);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);

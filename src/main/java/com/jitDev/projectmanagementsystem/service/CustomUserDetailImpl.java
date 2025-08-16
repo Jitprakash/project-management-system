@@ -1,7 +1,7 @@
 package com.jitDev.projectmanagementsystem.service;
 
 import com.jitDev.projectmanagementsystem.model.User;
-import com.jitDev.projectmanagementsystem.repository.UserRepo;
+import com.jitDev.projectmanagementsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,12 +16,12 @@ import java.util.List;
 public class CustomUserDetailImpl implements UserDetailsService {
 
     @Autowired
-    private UserRepo userRepo;
+    private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepo.findByEmail(username);
+        User user = userRepository.findByEmail(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("User not found with email: " + username);

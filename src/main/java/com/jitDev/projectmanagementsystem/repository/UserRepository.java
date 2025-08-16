@@ -2,8 +2,10 @@ package com.jitDev.projectmanagementsystem.repository;
 
 import com.jitDev.projectmanagementsystem.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserRepo extends JpaRepository<User,Long> {
+@Repository
+public interface UserRepository extends JpaRepository<User,Long> {
 
-    public User findByEmail(String Email);
+    public User findByEmail(String email);
 }
