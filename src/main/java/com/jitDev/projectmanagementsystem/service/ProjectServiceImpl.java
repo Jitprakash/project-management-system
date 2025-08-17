@@ -7,7 +7,6 @@ import com.jitDev.projectmanagementsystem.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.callback.CallbackHandler;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -79,7 +78,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void deleteProject(Long projectId, User userId) throws Exception {
+    public void deleteProject(Long projectId, Long userId) throws Exception {
 
         //get the project if it's not there it will throw a Exception
         //This is just to check if the project exists
@@ -104,16 +103,39 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void addUserToProject(Long projectId, Long userId) throws Exception {
+        Project project = getProjectById(projectId);
+        User user = userService.findUserById(userId);
 
+        if (!project.getTeam().contains(user)){
+
+            project.getChat().getUsers().add(user);//add the user so it can chat
+            project.getTeam().add(user);//add the user to project
+        }
+        projectRepository.save(project);
     }
 
     @Override
     public void removeUserToProject(Long projectId, Long userId) throws Exception {
+        Project project = getProjectById(projectId);
+        User user = userService.findUserById(userId);
 
+        if (project.getTeam().contains(user)){
+
+            project.getChat().getUsers().remove(user);//remove the user so it can chat
+            project.getTeam().remove(user);//remove the user to project
+        }
+        projectRepository.save(project);
     }
 
     @Override
     public Chat getChatByProjectId(Long projectId) throws Exception {
-        return null;
+        Project project = getProjectById(projectId);
+
+        return project.getChat();
+    }
+
+    @Override
+    public List<Project> searchProject(String keyword, User user) throws Exception {
+        return projectRepository.findByNameContainingAndTeamContains(keyword,user);
     }
 }
