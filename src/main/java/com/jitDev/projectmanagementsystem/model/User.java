@@ -1,6 +1,7 @@
 package com.jitDev.projectmanagementsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,8 @@ public class User {
 
     private String firstName;
     private String email;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @JsonIgnore

@@ -46,7 +46,7 @@ public class CommentServiceImpl implements CommentService {
 
         Comment newComment = new Comment();
 
-        newComment.setIssues(issue);
+        newComment.setIssue(issue);
         newComment.setUser(user);
         newComment.setCreatedDateTime(LocalDateTime.now());
         newComment.setContent(comment);
@@ -82,7 +82,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> findCommentByIssueId(Long issueId) {
-        return commentRepository.findByIssueId(issueId);
+    public List<Comment> findCommentByIssueId(Long issueId) throws Exception {
+        Optional<Issue> issueOptional = issueRepository.findById(issueId);
+        if (issueOptional.isEmpty()) {
+            throw new Exception("Issue not found with id " + issueId);
+        }
+
+        Issue issue = issueOptional.get();
+        return commentRepository.findByIssue(issue);
     }
 }

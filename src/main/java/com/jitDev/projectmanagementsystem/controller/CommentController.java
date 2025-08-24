@@ -39,7 +39,7 @@ public class CommentController {
         return ResponseEntity.ok(createdComment);
     }
 
-    @DeleteMapping("/{commenId}")
+    @DeleteMapping("/{commentId}")
     public ResponseEntity<MessageResponse> deleteComment(
             @PathVariable Long commentId,
             @RequestHeader("Authorization") String jwt
@@ -54,7 +54,7 @@ public class CommentController {
     }
 
     @GetMapping("/{issueId}")
-    public ResponseEntity<List<Comment>> getCommentByIssueId(@PathVariable Long issueId){
+    public ResponseEntity<List<Comment>> getCommentByIssueId(@PathVariable Long issueId) throws Exception {
         List<Comment> comments = commentService.findCommentByIssueId(issueId);
 
         return ResponseEntity.ok(comments);

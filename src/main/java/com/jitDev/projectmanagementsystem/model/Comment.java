@@ -23,5 +23,5 @@ public class Comment {
     private User user;
 
     @ManyToOne
-    private Issue issues;
+    private Issue issue;
 }

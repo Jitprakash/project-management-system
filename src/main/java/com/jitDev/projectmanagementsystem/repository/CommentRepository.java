@@ -1,12 +1,14 @@
 package com.jitDev.projectmanagementsystem.repository;
 
 import com.jitDev.projectmanagementsystem.model.Comment;
-import org.springframework.data.convert.ReadingConverter;
+import com.jitDev.projectmanagementsystem.model.Issue;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@ReadingConverter
+@Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findByIssueId(Long issueId);
+    List<Comment> findByIssue(Issue issue);
+    //To Do: - showing error
 }
